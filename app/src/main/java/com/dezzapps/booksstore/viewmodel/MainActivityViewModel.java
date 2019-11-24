@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
 
 import com.dezzapps.booksstore.model.Book;
@@ -13,7 +14,7 @@ import com.dezzapps.booksstore.model.Category;
 
 import java.util.List;
 
-public class MainActivityViewModel extends AndroidViewModel {
+public class MainActivityViewModel extends ViewModel {
 
     private BooksStoreRepository booksStoreRepository;
 
@@ -22,9 +23,9 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private LiveData<List<Book>> allBooksByCategory;
 
-    public MainActivityViewModel(@NonNull Application application) {
-        super(application);
-        booksStoreRepository = new BooksStoreRepository(application);
+    public MainActivityViewModel(BooksStoreRepository booksStoreRepository) {
+
+       this.booksStoreRepository =  booksStoreRepository;
     }
 
     public LiveData<List<Category>> getAllCategories() {

@@ -7,6 +7,7 @@ import com.dezzapps.booksstore.databinding.ActivityMainBinding;
 import com.dezzapps.booksstore.model.Book;
 import com.dezzapps.booksstore.model.Category;
 import com.dezzapps.booksstore.viewmodel.MainActivityViewModel;
+import com.dezzapps.booksstore.viewmodel.MainActivityViewModelFactory;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +31,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class MainActivity extends AppCompatActivity {
     
 
@@ -52,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
     public  static final int  ADD_BOOK_REQUEST_CODE = 1;
     public  static final int  EDIT_BOOK_REQUEST_CODE = 2;
 
+
+    @Inject
+    public MainActivityViewModelFactory mainActivityViewModelFactory;
+
     private final String TAG = "MainActivity";
 
     @Override
@@ -67,9 +74,15 @@ public class MainActivity extends AppCompatActivity {
 
         activityMainBinding.setClickHandlers(handlers);
         
-        mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+       // mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         
-        
+
+        App.getApp().getBookStoreComponent().inject(this);
+
+        mainActivityViewModel = ViewModelProviders.of(this, mainActivityViewModelFactory).get(MainActivityViewModel.class);
+
+
+
         mainActivityViewModel.getAllCategories().observe(this, new Observer<List<Category>>() {
             @Override
             public void onChanged(List<Category> categories) {
